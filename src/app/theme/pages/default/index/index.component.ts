@@ -50,12 +50,15 @@ export class IndexComponent implements OnInit, AfterViewInit {
       let nftDetails = await this.exchangeContractInstance.exchange(exchangeId);
       console.log(nftDetails)
       if (nftDetails.status == 0) {
+        let tokenInstance = new ethers.Contract(nftDetails.token2, environment.ERC20_Token_Abi, this.provider);
+        let tokenName = await tokenInstance.name()
         let availableTradeData = {
           partyAddress: this.truncateAddress(nftDetails.party1),
           nftTokenAddress: nftDetails.token1,
           exchangeId: parseInt(nftDetails.tokenID),
           expiry: parseInt(nftDetails.expiry),
-          // tokenAddress : 
+          tokenAddress : nftDetails.token2,
+          tokenName : tokenName,
           tokenAmount: this.toDecimal(parseFloat(ethers.utils.formatEther(nftDetails.amount2OrTokenID)), 2)
         }
         this.tradeData.push(availableTradeData)
