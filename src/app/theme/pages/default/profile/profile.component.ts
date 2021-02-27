@@ -116,6 +116,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     const separator = '....';
     const last4Digits = this.metamaskAddress.slice(-4);
     this.metamaskAddress = start4Digits.padStart(2, '0') + separator.padStart(2, '0') + last4Digits.padStart(2, '0');
+    if(this.metamaskAddress==null){
+      window.location.reload()
+    }
   }
   
  
