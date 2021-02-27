@@ -19,31 +19,71 @@
         <button class="btn btn-lg btn-danger">Cancel Trade</button>
       </div>
 
-      <div class="row">
+      <div class="row mt-4">
         <div class="col-xl-8">
-          <form>
-            <div class="row">
-              <div class="form-group col-lg-6 mb-3">
-                <label for="inputEmail4">Enter Selling Amount</label>
-                <div class="input-group">
-                  <input type="number" class="form-control" placeholder="0.00">
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="false">PLOT</button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item">PLOT</a>
-                      <a class="dropdown-item">ETH</a>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="sell-tab" data-bs-toggle="tab" data-bs-target="#sell" type="button"
+                role="tab" aria-controls="sell" aria-selected="true">Sell NFT</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="topup-tab" data-bs-toggle="tab" data-bs-target="#topup" type="button"
+                role="tab" aria-controls="topup" aria-selected="false">Top-up NFT</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="sell" role="tabpanel" aria-labelledby="sell-tab">
+              <form>
+                <div class="row">
+                  <div class="form-group col-lg-6 mb-3">
+                    <label for="inputEmail4">Enter Selling Amount</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" placeholder="0.00">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">PLOT</button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item">PLOT</a>
+                          <a class="dropdown-item">ETH</a>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  <div class="form-group col-lg-6 mb-3">
+                    <label for="inputPassword4">Set Expiry Date</label>
+                    <input type="date" class="form-control">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group col-lg-6 mb-3">
-                <label for="inputPassword4">Set Expiry Date</label>
-                <input type="date" class="form-control">
-              </div>
+                <button type="submit" class="btn btn-primary">Create Sale</button>
+              </form>
+
             </div>
-            <button type="submit" class="btn btn-primary">Crate Sale</button>
-          </form>
+            <div class="tab-pane fade" id="topup" role="tabpanel" aria-labelledby="topup-tab">
+              <form>
+                <div class="row">
+                  <div class="form-group col-lg-6 mb-3">
+                    <label for="inputEmail4">Enter Amount</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" placeholder="0.00">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">PLOT</button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item">PLOT</a>
+                          <a class="dropdown-item">ETH</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-lg-6 mb-3">
+                    <label for="inputEmail4">Valid till</label>
+                    <input type="number" class="form-control" disabled>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Top up</button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
 
