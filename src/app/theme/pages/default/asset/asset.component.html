@@ -4,22 +4,22 @@
       style="background-image: url(https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">
     </div>
     <div class="assets-desc">
-      <div class="alert alert-success" role="alert">
+      <div *ngIf="txSuccess" class="alert alert-success" role="alert">
         A simple success alert—check it out! <a href="btn btn-link" routerLink="/account">My Profile</a>
       </div>
-      <div class="asset-title">Assets title here</div>
-      <div class="d-flex align-items-center">
+      <div class="asset-title">NFT Id : {{tradeData.exchangeId}}</div>
+      <div *ngIf="!createTrade" class="d-flex align-items-center">
         <div class="asset-category">Position Booster</div>
-        <div class="asset-time-left">24 Hour left</div>
+        <div class="asset-time-left">{{tradeData.days}}:{{tradeData.hours}}:{{tradeData.minutes}}:{{tradeData.seconds}}</div>
       </div>
-      <div>
-        <div class="seller-address"><span>owned by:</span> 0x32fC7481658471D9Ced17a560353dAd782002B69</div>
-        <div class="asset-price">200 PLOT</div>
-        <button class="btn btn-lg btn-primary">Buy Now</button>
-        <button class="btn btn-lg btn-danger">Cancel Trade</button>
+      <div *ngIf="!createTrade">
+        <div class="seller-address"><span>owned by:</span> {{tradeData.partyAddress}}</div>
+        <div class="asset-price">{{tradeData.tokenAmount}} {{tradeData.tokenName}}</div>
+        <button class="btn btn-lg btn-primary" (click)="buyNFT()">Buy Now</button>
+        <button class="btn btn-lg btn-danger" (click)="cancelTrade()">Cancel Trade</button>
       </div>
 
-      <div class="row">
+      <div *ngIf="createTrade" class="row">
         <div class="col-xl-8">
           <form>
             <div class="row">

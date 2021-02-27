@@ -54,7 +54,7 @@ export class IndexComponent implements OnInit, AfterViewInit {
         let tokenName = await tokenInstance.name()
         let availableTradeData = {
           partyAddress: this.truncateAddress(nftDetails.party1),
-          nftTokenAddress: nftDetails.token1,
+          nftTokenAddress: this.truncateAddress(nftDetails.token1),
           exchangeId: parseInt(nftDetails.tokenID),
           expiry: parseInt(nftDetails.expiry),
           tokenAddress : nftDetails.token2,

@@ -15,7 +15,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   public metamaskNotPresent;
   public metaLoggedOff;
   public provider;
-  public url = environment.url;
   public tradeData = [];
   public exchangeContractInstance;
   // public connectWallet;
@@ -70,12 +69,12 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         this.contract()
       }
       else {
-        this.provider = new ethers.providers.JsonRpcProvider(environment.jsonRpcUrl);
+        this.provider = new ethers.providers.WebSocketProvider(environment.jsonRpcUrl);
         this.metaLoggedOff = true;
       }
     } 
     else {
-      this.provider = new ethers.providers.JsonRpcProvider(this.url);
+      this.provider = new ethers.providers.WebSocketProvider(environment.jsonRpcUrl);
       this.metaLoggedOff = true;
     }
   }
