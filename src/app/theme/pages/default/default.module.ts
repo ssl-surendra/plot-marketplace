@@ -7,6 +7,8 @@ import { DefaultComponent } from './default.component';
 import { HttpClientModule } from "@angular/common/http"
 
 import { IndexComponent } from "./index/index.component";
+import { ProfileComponent } from './profile/profile.component';
+
 
 import { FormsModule } from '@angular/forms';
 
@@ -14,6 +16,7 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     DefaultComponent,
     IndexComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule, LayoutModule, DefaultRoutingModule, HttpClientModule, FormsModule
