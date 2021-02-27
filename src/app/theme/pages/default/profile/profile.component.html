@@ -47,24 +47,14 @@
   </div>
 </div>
 
-<div class="modal" id="modal-metamaskCheckk" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+<div class="modal" id="modal-metamaskCheck" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Connect to Wallet</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" routerLink="/market/hourly/BTC-ETH">
           <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div class="modal-body text-center">
-        <!-- If metamask is not logged on -->
-        <div *ngIf="metaLoggedOff">
-          <p>You need to use an Ethereum wallet. Login to Metamask Extension.</p>
-          <a class="card color-primary my20 py20 px40" style="display: inline-block;" (click)="connectWallet()">
-            <img height="40px" src="assets/img/metamask-icon.svg">
-            <h6 class="mb0 mt10">MetaMask</h6>
-          </a>
-        </div>
         <!-- If no metamask installed in browser -->
         <div *ngIf="metamaskNotPresent">
           <p>You need to use an Ethereum wallet. Try the Metamask Extension for Brave, Chrome and Firefox.</p>
@@ -74,6 +64,11 @@
             <h6 class="mb0 mt10">MetaMask</h6>
             <span style="font-size: 0.8rem;">Install in Chrome, Brave or Firefox</span>
           </a>
+        </div>
+        <!-- If wrong network selected in metamask -->
+        <div *ngIf = "wrongNetwork">
+          <p>Please switch to the Kovan test Network via Metamask to continue</p>
+          <a class="btn btn-primary mt20 mb20" (click)="reload()">Try Again</a>
         </div>
       </div>
     </div>
