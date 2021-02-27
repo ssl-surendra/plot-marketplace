@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  url : "https://kovan.infura.io/v3/b17745bda0d84a1281331fe8eb941a13",
   production: false,
   jsonRpcUrl: "wss://kovan.infura.io/ws/v3/3fdb5cf0f9df4bdcbfe687fbdf09f17d",
   exchangeAddress : "0x55173bdc5Fe2615664cB0E2f9db6b5E85b917a7d",
