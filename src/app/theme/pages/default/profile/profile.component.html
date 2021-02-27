@@ -2,7 +2,8 @@
   <div class="hero-background" style="background-image: url(assets/img/bg-abstract-2.jpg);"></div>
   <div class="hero-account">
     <img class="user-avatar" src="./assets/img/avatar.png">
-    <div  *ngIf="!wrongNetwork" class="address">{{metamaskAddress}}</div>
+    <!-- <a *ngIf="metaLoggedOff && !wrongNetwork " href="#" class="btn btn-primary" (click)="connectWallet()">Connect Wallet</a> -->
+    <div  *ngIf="!metaLoggedOff && !wrongNetwork" class="address">{{metamaskAddress}}</div>
   </div>
 </div>
 <div class="content">
@@ -51,7 +52,9 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Connect to Wallet</h5>
+        <h5 class="modal-title">Connect to MetaMask Wallet</h5>
+        <!-- <a *ngIf="metaLoggedOff && !wrongNetwork " href="#" class="btn btn-primary" (click)="connectWallet()">Connect Wallet</a> -->
+
           <span aria-hidden="true">&times;</span>
       </div>
       <div class="modal-body text-center">
@@ -69,6 +72,14 @@
         <div *ngIf = "wrongNetwork">
           <p>Please switch to the Kovan test Network via Metamask to continue</p>
           <a class="btn btn-primary mt20 mb20" (click)="reload()">Try Again</a>
+        </div>
+        <div *ngIf = "connectToWallet">
+          <p>connect to wallet</p>
+          <a class="btn btn-primary mt20 mb20" (click)="reload()">Try Again</a>
+        </div>
+        <div *ngIf = "metaLoggedOff">
+          <!-- <p>connect to wallet</p> -->
+          <a class="btn btn-primary mt20 mb20" (click)="connectWallet()">Connect Wallet</a>
         </div>
       </div>
     </div>
