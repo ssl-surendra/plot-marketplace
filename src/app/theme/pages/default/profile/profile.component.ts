@@ -16,6 +16,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   public metaLoggedOff;
   public provider;
   public url = environment.url;
+  public tradeData = [];
+  public exchangeContractInstance;
   // public connectWallet;
   public getWeb3Metamask
   constructor() {
@@ -23,6 +25,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(){
+    // console.log(this.web3.selectedAddress)
+    // if(this.metamaskAddress)
     (async () => {
       if (this.web3 == undefined) {
         $('#modal-metamaskCheck').modal('show');
@@ -44,7 +48,15 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (this.web3 != undefined) {
+      window['ethereum'].on('accountsChanged', () => {
+        window.location.reload();
+      });
 
+      window['ethereum'].on('networkChanged', () => {
+        window.location.reload();
+      });
+    }
   }
   displayInfo(){
     if (this.web3 != undefined) {
@@ -55,9 +67,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         });
         var metamaskAddress = this.web3.selectedAddress;
         this.trucateAddress(metamaskAddress);
+        this.contract()
       }
       else {
-        this.provider = new ethers.providers.JsonRpcProvider(this.url);
+        this.provider = new ethers.providers.JsonRpcProvider(environment.jsonRpcUrl);
         this.metaLoggedOff = true;
       }
     } 
@@ -66,6 +79,29 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       this.metaLoggedOff = true;
     }
   }
+
+  contract(){
+    if (this.web3 != undefined) {
+      if (this.web3.selectedAddress != null) {
+        this.provider = new ethers.providers.Web3Provider(this.web3);
+        this.exchangeContractInstance = new ethers.Contract(environment.exchangeAddress, environment.exchangeAbi, this.provider);
+      } else {
+        this.provider = new ethers.providers.WebSocketProvider(environment.jsonRpcUrl);
+        this.exchangeContractInstance = new ethers.Contract(environment.exchangeAddress, environment.exchangeAbi, this.provider);
+      }
+    } else {
+      this.provider = new ethers.providers.WebSocketProvider(environment.jsonRpcUrl);
+      this.exchangeContractInstance = new ethers.Contract(environment.exchangeAddress, environment.exchangeAbi, this.provider);
+    }
+    this.myNFT();
+  }
+
+  async myNFT(){    
+      let nftDetails = await this.exchangeContractInstance
+      console.log(nftDetails)
+   
+  }
+
   setNetwork(network) {
     this.provider = network;
     console.log(this.provider)
@@ -80,6 +116,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     const separator = '....';
     const last4Digits = this.metamaskAddress.slice(-4);
     this.metamaskAddress = start4Digits.padStart(2, '0') + separator.padStart(2, '0') + last4Digits.padStart(2, '0');
+  }
+  
+ 
+  reload() {
+    window.location.reload()
   }
 
 }
