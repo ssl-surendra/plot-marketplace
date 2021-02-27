@@ -2,9 +2,9 @@
   <div class="hero-background" style="background-image: url(assets/img/bg-abstract-1.jpg);"></div>
   <h1>The PlotX NFT Marketplace</h1>
   <p class="lead">Buy & Sell NFTs</p>
-  <button class="btn btn-primary">Explore</button>
+  <button class="btn btn-primary" (click)="scroll(target)">Explore</button>
 </div>
-<div class="content">
+<div class="content" #target>
   <div class="row">
     <div class="col-lg-3 col-sm-6">
       <div class="card nft-card">

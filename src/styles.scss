@@ -8,6 +8,25 @@ body {
 }
 .navbar {
   padding: 1rem 3.75rem;
+  .navbar-brand{
+    img{
+      height: 25px;
+    }
+  }
+  .user-toggle{
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 4px 0px;
+    // border: 2px solid rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    border-radius: 50%;
+    .user-avatar{
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    &::after{
+      display: none;
+    }
+  }
 }
 .hero {
   min-height: 400px;

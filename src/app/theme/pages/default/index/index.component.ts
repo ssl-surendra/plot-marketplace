@@ -19,4 +19,8 @@ export class IndexComponent implements OnInit, AfterViewInit {
 
   }
 
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }
+
 }
