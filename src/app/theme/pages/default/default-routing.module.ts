@@ -4,6 +4,7 @@ import { DefaultComponent } from './default.component';
 
 import { IndexComponent } from './index/index.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AssetComponent } from './asset/asset.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,14 @@ const routes: Routes = [
       {
         path: "account",
         component: ProfileComponent
+      },
+      {
+        path: "account/:id",
+        component: ProfileComponent
+      },
+      {
+        path: "asset/:id",
+        component: AssetComponent
       },
       { path: '', redirectTo: 'market', pathMatch: 'full' }
     ]

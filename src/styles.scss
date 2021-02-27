@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+$primary-color: #0d6efd;
 body {
   background-color: #f2f2f2;
   font-family: "Poppins", sans-serif;
@@ -102,5 +103,49 @@ body {
   }
   .address{
     font-size: 0.8rem;
+  }
+}
+.assets-wrapper{
+  display: flex;
+  .assets-img{
+    width: 400px;
+    height: 500px;
+    border: 2px solid rgb(174, 190, 201);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex: 1 0 400px;
+  }
+  .assets-desc{
+    margin-left: 5rem;
+    .asset-title{
+      font-size: 1.35rem;
+      font-weight: 600;
+    }
+    .seller-address{
+      font-size: 1rem;
+      font-weight: 500;
+      opacity: 0.6;
+      margin: 0.5rem 0;
+    }
+    .asset-category{
+      color: $primary-color;
+      font-weight: 600;
+      font-size: 0.8rem;
+      margin-right: 1rem;
+    }
+    .asset-price{
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+    .asset-time-left{
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .asset-description{
+      font-weight: 0.9rem;
+      margin-top: 2rem;
+    }
   }
 }
