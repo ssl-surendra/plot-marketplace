@@ -24,25 +24,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(){
-    // console.log(this.web3.selectedAddress)
-    // if(this.metamaskAddress)
-    (async () => {
-      if (this.web3 == undefined) {
+    if(this.web3.selectedAddress== null){
+      if(this.metamaskAddress==undefined){
         $('#modal-metamaskCheck').modal('show');
-        this.metamaskNotPresent = true;
-      }else{
-        try {
-                console.log("njfevev")
-               await this.web3.enable();
-               this.displayInfo()
-              }
-              catch (err) {
-                console.log(err)
-              }
-      }
-    })();   
-
-      
+        this.metaLoggedOff=true
+      }    
+    }else{
+      this.displayInfo()
+    }
 
   }
 
@@ -57,7 +46,38 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       });
     }
   }
+  public async connectWallet() {
+    if (this.web3 == undefined) {
+      $('#modal-metamaskCheck').modal('show');
+      this.metamaskNotPresent = true;
+    }
+    else {
+      try {
+        await this.web3.enable();
+        this.displayInfo()
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+  }
+  // (async () => {
+  //   if (this.web3 == undefined) {
+  //     $('#modal-metamaskCheck').modal('show');
+  //     this.metamaskNotPresent = true;
+  //   }else{
+  //     try {
+  //             console.log("njfevev")
+  //            await this.web3.enable();
+  //            this.displayInfo()
+  //           }
+  //           catch (err) {
+  //             console.log(err)
+  //           }
+  //   }
+  // })(); 
   displayInfo(){
+    this.metaLoggedOff=false
     if (this.web3 != undefined) {
       if (this.web3.selectedAddress != null) {
         this.provider = new ethers.providers.Web3Provider(this.web3);
@@ -95,12 +115,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.myNFT();
   }
 
-  async myNFT(){    
-      let nftDetails = await this.exchangeContractInstance
-      console.log(nftDetails)
-   
-  }
-
   setNetwork(network) {
     this.provider = network;
     console.log(this.provider)
@@ -119,10 +133,60 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       window.location.reload()
     }
   }
-  
- 
   reload() {
     window.location.reload()
+  }
+  async myNFT(){    
+    // let nftDetails = await this.exchangeContractInstance
+    // let exchangeLength = await this.exchangeContractInstance.getCountExchange()
+    // exchangeLength = parseInt(exchangeLength["_hex"])
+    // console.log(exchangeLength)
+    // for (let i = 0; i < exchangeLength.length; i++) {
+    // let nftDetails = await this.exchangeContractInstance.exchange(exchangeId);
+    // }
+    // let data = await this.exchangeEventData();
+    // for (let i = 0; i < data.length; i++) {
+      // let exchangeId = parseInt(data[i].decodedLog.args._exchangeID);
+      let exchangeLength = await this.exchangeContractInstance.getCountExchange();
+      exchangeLength = parseInt(exchangeLength["_hex"])
+      console.log(exchangeLength)
+      let nftDetails = await this.exchangeContractInstance.exchange(0);
+      console.log(nftDetails)
+      let nftDetails1 = await this.exchangeContractInstance.exchange(1);
+      console.log(nftDetails1)
+      let nftDetails2 = await this.exchangeContractInstance.exchange(2);
+      console.log(nftDetails2)
+      let nftDetails3 = await this.exchangeContractInstance.exchange(2);
+      console.log(nftDetails3)
+      console.log("hiii")
+    // }
+}
+  async exchangeEventData() {
+    // this.provider.resetEventsBlock(0)
+    let topic = ethers.utils.id("ExchangeCreated(uint256,address,address,uint256,address,uint256)");
+    var iface = new ethers.utils.Interface(environment.exchangeAbi);
+    let filter = {
+      address: environment.exchangeAddress,
+      fromBlock: 0,
+      toBlock: 'latest',
+      topics: [topic]
+    }
+    var callPromise = this.provider.getLogs(filter);
+    var eventData = callPromise.then(function (events) {
+      var parsedEvents = events.map(function (log) {
+        let blockNumber = log.blockNumber;
+        let decodedLog = iface.parseLog(log)
+        let iFaceData = {
+          decodedLog,
+          blockNumber
+        }
+        return iFaceData
+      });
+      return parsedEvents;
+    }).catch(function (err) {
+      console.log(err);
+    });
+    return eventData;
   }
 
 }
