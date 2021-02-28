@@ -7,9 +7,11 @@
 <div class="content" #target>
   <div class="row">
     <div *ngFor="let ele of tradeData" class="col-lg-3 col-sm-6">
-      <div class="card nft-card" routerLink="/asset/{{ele.exchangeId}}" routerLinkActive="active">
-        <img class="card-img-top"
-          src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80">
+      <div class="card nft-card" routerLink="/asset/{{ele.tokenId}}" routerLinkActive="active">
+        <img *ngIf="ele.categoryId == 1" class="card-img-top"
+          src="./assets/img/fee-slasher.jpg">
+        <img *ngIf="ele.categoryId == 0" class="card-img-top"
+          src="./assets/img/position-booster.jpg">
           <div class="card-body">
             <div>
               <div class="card-head">
@@ -18,10 +20,11 @@
                   {{ele.tokenAmount}} {{ele.tokenName}}
                 </div>
               </div>
-              <div class="card-title">Selling NFT Title : {{ele.nftTokenAddress}}</div>
-              <div class="card-title">Selling NFT Id : {{ele.exchangeId}}</div>
+              <div class="card-title">{{ele.tokenDesc}}</div>
+              <!-- <div class="card-title">Selling NFT Id : {{ele.tokenId}}</div> -->
             </div>
             <div class="time"><i></i>{{ele.days}}:{{ele.hours}}:{{ele.minutes}}:{{ele.seconds}}</div>
+            <div class="time"><i></i>Validity : {{ele.tokenValidity}}</div>
           </div>
       </div>
     </div>

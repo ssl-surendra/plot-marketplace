@@ -1,24 +1,36 @@
-<div class="content">
+<div *ngIf="show" class="content">
   <div class="assets-wrapper">
-    <div class="assets-img"
-      style="background-image: url(https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">
+    <div *ngIf="tradeData.categoryId == 1" class="assets-img"
+      style="background-image: url(./assets/img/fee-slasher.jpg);">
+    </div>
+    <div *ngIf="tradeData.categoryId == 0" class="assets-img"
+      style="background-image: url(./assets/img/position-booster.jpg);">
     </div>
     <div class="assets-desc">
+      <div class="asset-title">Token ID : {{tradeData.tokenId}}</div>
+      <div class="asset-title">Validity : {{tradeData.tokenValidity}}</div>
+      <div class="asset-title">Percentage : {{tradeData.percentage}}%</div>
       <div *ngIf="txSuccess" class="alert alert-success" role="alert">
-        A simple success alert—check it out! <a href="btn btn-link" routerLink="/account">My Profile</a>
+        Transaction successfull! <a href="btn btn-link" routerLink="/account">My Profile</a>
       </div>
-      <div class="asset-title">NFT Id : {{tradeData.exchangeId}}</div>
-      <div *ngIf="!createTrade" class="d-flex align-items-center">
+      <div *ngIf="!createTrade && !txSuccess" class="d-flex align-items-center">
         <div class="asset-category">Position Booster</div>
-        <div class="asset-time-left">{{tradeData.days}}:{{tradeData.hours}}:{{tradeData.minutes}}:{{tradeData.seconds}}</div>
+        <div class="asset-time-left">{{tradeData.days}}:{{tradeData.hours}}:{{tradeData.minutes}}:{{tradeData.seconds}}
+        </div>
       </div>
-      <div *ngIf="!createTrade">
+      <div *ngIf="!createTrade && !txSuccess">
         <div class="seller-address"><span>owned by:</span> {{tradeData.partyAddress}}</div>
         <div class="asset-price">{{tradeData.tokenAmount}} {{tradeData.tokenName}}</div>
-        <button class="btn btn-lg btn-primary" (click)="buyNFT()">Buy Now</button>
-        <button class="btn btn-lg btn-danger" (click)="cancelTrade()">Cancel Trade</button>
+        <p *ngIf="approving" style="color:blue;">Approving...</p>
+        <p *ngIf="buying" style="color:blue;">Buying...</p>
+        <p *ngIf="cancelling" style="color:blue;">Cancelling...</p>
+        <div *ngIf="approving || buying || cancelling" class="spinner-border" role="status"></div>
+        <button *ngIf="!ownerNft && (!approving && !buying)" class="btn btn-lg btn-primary" (click)="buyNFT()">Buy
+          Now</button>
+        <button *ngIf="ownerNft && !cancelling" class="btn btn-lg btn-danger" (click)="cancelTrade()">Cancel
+          Trade</button>
       </div>
-      <div class="row mt-4" *ngIf="createTrade">
+      <div class="row mt-4" *ngIf="createTrade && !txSuccess">
         <div class="col-xl-8">
           <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -34,39 +46,47 @@
             <div class="tab-pane fade show active" id="sell" role="tabpanel" aria-labelledby="sell-tab">
               <form>
                 <div class="row">
-                  <div class="form-group col-lg-6 mb-3">
+                  <div class="form-group col-lg-12 mb-3">
                     <label for="inputEmail4">Enter Selling Amount</label>
                     <div class="input-group">
-                      <input type="number" class="form-control" placeholder="0.00">
+                      <input type="number" class="form-control" (click)="removeError()" placeholder="0.00"
+                        name="tokenAmount" [(ngModel)]="tokenAmount">
                       <div class="input-group-append">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">PLOT</button>
+                          aria-haspopup="true" aria-expanded="false">plotC</button>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item">PLOT</a>
+                          <a class="dropdown-item">plotC</a>
                           <a class="dropdown-item">ETH</a>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group col-lg-6 mb-3">
+                  <div class="form-group col-lg-12 mb-3">
                     <label for="inputPassword4">Set Expiry Date</label>
-                    <input type="date" class="form-control">
+                    <input type="date" class="form-control" name="expiryDate" (click)="removeError()"
+                      [(ngModel)]="expiryDate">
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Create Sale</button>
+                <p *ngIf="approvingCreate" style="color:blue;">Approving...</p>
+                <p *ngIf="creating" style="color:blue;">CreatingTrade...</p>
+                <div *ngIf="creating || approvingCreate" class="spinner-border" role="status"></div>
+                <button *ngIf="!creating && !approvingCreate" type="submit" class="btn btn-primary" (click)="createExchange()">Create Sale</button>
+                <div *ngIf="error" class="alert alert-warning" role="alert">
+                  Enter correct date or tokenAmount!
+                </div>
               </form>
 
             </div>
             <div class="tab-pane fade" id="topup" role="tabpanel" aria-labelledby="topup-tab">
               <form>
                 <div class="row">
-                  <div class="form-group col-lg-6 mb-3">
+                  <div class="form-group col-lg-12 mb-3">
                     <label for="inputEmail4">Enter Amount</label>
                     <div class="input-group">
-                      <input type="number" class="form-control" placeholder="0.00">
+                      <input type="number" (click)="removeTopupError()" class="form-control" (keyup)="validTill()" placeholder="0.00" name="topupAmount" [(ngModel)]="topupAmount">
                       <div class="input-group-append">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">PLOT</button>
+                          aria-haspopup="true" aria-expanded="false">plotC</button>
                         <div class="dropdown-menu">
                           <a class="dropdown-item">PLOT</a>
                           <a class="dropdown-item">ETH</a>
@@ -74,22 +94,48 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group col-lg-6 mb-3">
+                  <div class="form-group col-lg-12 mb-3">
                     <label for="inputEmail4">Valid till</label>
-                    <input type="number" class="form-control" disabled>
+                    <input type="text" class="form-control" name="validtill" [(ngModel)]="validtill" disabled>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Top up</button>
+                <p *ngIf="topup" style="color:blue;">Top-up processing...</p>
+                <p *ngIf="approveTopUp" style="color:blue;">Approving...</p>
+                <div *ngIf="topup || approveTopUp" class="spinner-border" role="status"></div>
+                <button *ngIf="!topup && !approveTopUp" type="submit" class="btn btn-primary" (click)="topUp()">Top up</button>
+                <div *ngIf="errorTopup" class="alert alert-warning" role="alert">
+                  Enter correct Top-up Amount!
+                </div>
               </form>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="asset-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat ut architecto
-        recusandae quia modi illum
-        asperiores quod exercitationem laudantium officiis? Quia, similique aut? Eveniet consequuntur eos vitae
-        voluptates fugiat veniam.</div>
+      <div class="asset-description">{{tradeData.desc}}.</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-metamaskCheck1" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Connect to MetaMask Wallet</h5>
+        <span aria-hidden="true">&times;</span>
+      </div>
+      <div class="modal-body text-center">
+        <div *ngIf="metamaskNotPresent && !wrongNetwork">
+          <p>Download Metamask Extension and connect with your wallet to continue using plotx marketplace.</p>
+        </div>
+        <div *ngIf="!metamaskNotPresent && !wrongNetwork">
+          <a class="btn btn-primary mt20 mb20" (click)="enableMetamask()">Connect</a>
+        </div>
+        <div *ngIf="wrongNetwork">
+          <p>Please switch to the kovan test network via Metamask to continue using PlotX marketplace.</p>
+          <a class="btn btn-primary mt20 mb20" (click)="reload()">Try Again</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
