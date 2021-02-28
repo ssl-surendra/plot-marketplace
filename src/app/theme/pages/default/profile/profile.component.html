@@ -6,44 +6,31 @@
     <div  *ngIf="!metaLoggedOff && !wrongNetwork" class="address">{{metamaskAddress}}</div>
   </div>
 </div>
-<div class="content">
-  <div class="row">
-    <div class="col-lg-3 col-sm-6">
-      <div class="card nft-card">
-        <img class="card-img-top"
-          src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80">
-        <div class="card-body">
-          <div>
-            <div class="card-title">lorem ipsum doller sit amet lorem ipsum</div>
-          </div>
-          <div class="card-head" *ngIf="false">
-            <span class="time mt-0">24 hour left</span>
-            <div class="price">
-              250 PLOT
+<div *ngIf="show" class="content">
+  <div *ngIf="tokenData.length>0" class="row">
+    <div *ngFor="let ele of tokenData" class="col-lg-3 col-sm-6">
+      <div class="card nft-card" routerLink="/asset/{{ele.tokenId}}" routerLinkActive="active">
+        <img *ngIf="ele.categoryId == 1" class="card-img-top"
+          src="./assets/img/fee-slasher.jpg">
+        <img *ngIf="ele.categoryId == 0" class="card-img-top"
+          src="./assets/img/position-booster.jpg">
+          <div class="card-body">
+            <div>
+              <div class="card-head">
+                <div class="price">
+                  TokenId : {{ele.tokenId}}
+                </div>
+              </div>
+              <div class="card-title">{{ele.desc}}</div>
+              <!-- <div class="card-title">Selling NFT Id : {{ele.tokenId}}</div> -->
             </div>
+            <!-- <div class="time"><i></i>{{ele.categoryId}}:{{ele.categoryId}}:{{ele.categoryId}}:{{ele.categoryId}}</div> -->
+            <div class="time"><i></i>Validity : {{ele.validity}}</div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-sm-6">
-      <div class="card nft-card">
-        <img class="card-img-top"
-          src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80">
-        <div class="card-body">
-          <div>
-            <div class="card-title">lorem ipsum doller sit amet lorem ipsum</div>
-          </div>
-          <div class="card-head" *ngIf="true">
-            <span class="time mt-0">24 hour left</span>
-            <div class="price">
-              250 PLOT
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-  <div class="text-center py-5">
+  <div *ngIf="tokenData.length==0" class="text-center py-5">
     <h3>No assets found in this account </h3>
   </div>
 </div>
@@ -53,33 +40,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Connect to MetaMask Wallet</h5>
-        <!-- <a *ngIf="metaLoggedOff && !wrongNetwork " href="#" class="btn btn-primary" (click)="connectWallet()">Connect Wallet</a> -->
-
-          <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true">&times;</span>
       </div>
       <div class="modal-body text-center">
-        <!-- If no metamask installed in browser -->
-        <div *ngIf="metamaskNotPresent">
-          <p>You need to use an Ethereum wallet. Try the Metamask Extension for Brave, Chrome and Firefox.</p>
-          <a href="https://metamask.io/" target="_blank" class="card color-primary my20 py20 px40"
-            style="display: inline-block;">
-            <img height="40px" src="assets/img/metamask-icon.svg">
-            <h6 class="mb0 mt10">MetaMask</h6>
-            <span style="font-size: 0.8rem;">Install in Chrome, Brave or Firefox</span>
-          </a>
+        <div *ngIf="metamaskNotPresent && !wrongNetwork">
+          <p>Download Metamask Extension and connect with your wallet to continue using plotx marketplace.</p>
         </div>
-        <!-- If wrong network selected in metamask -->
-        <div *ngIf = "wrongNetwork">
-          <p>Please switch to the Kovan test Network via Metamask to continue</p>
+        <div *ngIf="!metamaskNotPresent && !wrongNetwork">
+          <a class="btn btn-primary mt20 mb20" (click)="enableMetamask()">Connect</a>
+        </div>
+        <div *ngIf="wrongNetwork">
+          <p>Please switch to the kovan test network via Metamask to continue using PlotX marketplace.</p>
           <a class="btn btn-primary mt20 mb20" (click)="reload()">Try Again</a>
-        </div>
-        <div *ngIf = "connectWallet">
-          <p>connect to wallet</p>
-          <a class="btn btn-primary mt20 mb20" (click)="reload()">Try Again</a>
-        </div>
-        <div *ngIf = "metaLoggedOff">
-          <!-- <p>connect to wallet</p> -->
-          <a class="btn btn-primary mt20 mb20" (click)="connectWallet()">Connect Wallet</a>
         </div>
       </div>
     </div>

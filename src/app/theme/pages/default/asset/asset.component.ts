@@ -135,7 +135,21 @@ export class AssetComponent implements OnInit, AfterViewInit {
         this.createTrade = true;
       }
     } else {
+      let couponInstance = new ethers.Contract(environment.PlotxCouponAddress, environment.plotxCouponAbi, this.provider);
+      let categoryData = await couponInstance.couponCategory(tokenId);
+      let standardTime = new Date(parseInt(categoryData.validity) * 1000);
+      let time = standardTime.toString().substr(4, 12);
+      let timeFormat = this.formatAMPM(new Date(parseInt(categoryData.validity) * 1000));
+      this.tradeData["tokenValidity"] = time + " " + timeFormat
+      this.tradeData["categoryId"] = parseInt(categoryData.categoryId);
+
+      let descData = await couponInstance._defaultCouponType(categoryData.categoryId);
+      this.tradeData["desc"] = descData.desc;
+      this.tradeData["percentage"] = descData.perc;
+      this.tradeData["tokenId"] = parseInt(tokenId);
+
       this.createTrade = true;
+      this.show = true;
     }
   }
 
@@ -232,7 +246,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
         this.approvingCreate = false;
         this.creating = true;
         let create = await this.exchangeContractInstance.createExchange(this.tradeData["tokenId"],
-          this.tradeData["nftAddress"], time, environment.ERC20_Token, ethers.utils.parseEther(this.tokenAmount.toString()));
+         environment.PlotxCouponAddress, time, environment.ERC20_Token, ethers.utils.parseEther(this.tokenAmount.toString()));
         await this.provider.waitForTransaction(create.hash);
         await this.provider.waitForTransaction(create.hash);
         this.creating = false;
